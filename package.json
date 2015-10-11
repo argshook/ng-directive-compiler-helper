@@ -1,0 +1,17 @@
+{
+  "name": "ng-directive-compiler-helper",
+  "version": "0.0.1",
+  "description": "helper function for easier angularJS 1.x directive compilation in unit tests",
+  "main": "index.js",
+  "scripts": {
+    "test": "karma test --single-run"
+  },
+  "keywords": [
+    "angular",
+    "directive",
+    "test",
+    "karma"
+  ],
+  "author": "Arijus Šukys <argshook@gmail.com> (http://arijus.net)",
+  "license": "MIT"
+}
