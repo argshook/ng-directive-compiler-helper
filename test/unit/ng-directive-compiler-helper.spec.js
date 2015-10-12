@@ -86,8 +86,9 @@ describe('createCompiler', function() {
       });
 
       it('should set directive attributes from second argument', function() {
-        createdCompiler({}, { moustache: 'french' }, function(scope, element) {
+        createdCompiler({}, { moustache: 'french', 'big-phat': 'azz' }, function(scope, element) {
           expect(element.attr('moustache')).toBe('french');
+          expect(element.attr('big-phat')).toBe('azz');
         });
       });
 

@@ -95,8 +95,9 @@ After including this package you will be able to use `createCompiler` function. 
   // adjust directive element attributes
   it('should have additional attributes', () => {
     // first param === parentScope, empty in this case
-    compile({}, { newAttribute: 'hello' }, (scope, element) => {
-      expect(element.attr('newAttribute')).toBe('hello');
+    // note that attribute properties are kebab-case and not camelCase!
+    compile({}, { 'new-attribute': 'hello' }, (scope, element) => {
+      expect(element.attr('new-attribute')).toBe('hello');
     });
   });
   ```
