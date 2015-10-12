@@ -1,1 +1,0 @@
-module.exports = require('lib/ng-directive-compiler-helper.js');

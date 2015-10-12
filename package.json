@@ -2,9 +2,13 @@
   "name": "ng-directive-compiler-helper",
   "version": "0.0.1",
   "description": "helper function for easier angularJS 1.x directive compilation in unit tests",
-  "main": "index.js",
+  "main": "lib/ng-directive-compiler-helper.js",
   "scripts": {
     "test": "karma start test/karma.conf.js --single-run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/argshook/ng-directive-compiler-helper.git"
   },
   "keywords": [
     "angular",
