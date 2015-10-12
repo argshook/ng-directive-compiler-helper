@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/argshook/ng-directive-compiler-helper.svg?branch=master)](https://travis-ci.org/argshook/ng-directive-compiler-helper)
+
 # Helper for easier directive compiling
 
 A small helper function to ease the pain of testing Angular 1.x directives. 
