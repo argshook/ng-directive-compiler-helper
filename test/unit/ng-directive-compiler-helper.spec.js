@@ -4,7 +4,7 @@ describe('createCompiler', function() {
       mockIsolateTemplate = '<my-isolate-directive></my-isolate-directive>';
 
   angular
-    .module('mockModule', [])
+    .module('mockModule', ['ngMock'])
     .directive('myDirective', function() {
       return {
         restrict: 'E',

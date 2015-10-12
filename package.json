@@ -4,14 +4,21 @@
   "description": "helper function for easier angularJS 1.x directive compilation in unit tests",
   "main": "index.js",
   "scripts": {
-    "test": "karma test --single-run"
+    "test": "karma start test/karma.conf.js --single-run"
   },
   "keywords": [
     "angular",
     "directive",
-    "test",
-    "karma"
+    "test"
   ],
   "author": "Arijus Šukys <argshook@gmail.com> (http://arijus.net)",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "jasmine": "^2.3.2",
+    "jasmine-core": "^2.3.4",
+    "karma": "^0.13.10",
+    "karma-jasmine": "^0.3.6",
+    "karma-phantomjs-launcher": "^0.2.1",
+    "phantomjs": "^1.9.18"
+  }
 }
