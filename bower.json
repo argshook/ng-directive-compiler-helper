@@ -18,8 +18,6 @@
   ],
   "dependencies": {
     "angular-mocks": "~1.4.7",
-    "lodash": "~3.10.1",
-    "angular": "~1.4.7",
-    "jquery": "~2.1.4"
+    "angular": "~1.4.7"
   }
 }
