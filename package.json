@@ -1,6 +1,6 @@
 {
   "name": "ng-directive-compiler-helper",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "helper function for easier angularJS 1.x directive compilation in unit tests",
   "main": "lib/ng-directive-compiler-helper.js",
   "scripts": {
