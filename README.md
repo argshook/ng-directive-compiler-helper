@@ -2,7 +2,7 @@
 
 # Helper for easier directive compiling
 
-A small helper function to ease the pain of testing Angular 1.x directives. 
+Small function to ease testing Angular 1.x directives. 
 
 Usually you would have to set up directive compiler, give it a template, manage its attributes, parent or isolate scopes. This helper abstracts these things so you can focus on tests.
 
@@ -26,7 +26,7 @@ Usually you would have to set up directive compiler, give it a template, manage 
 
 ## Quick reference
 
-After including this package you will be able to use `createCompiler` function. It requires directive template, `$rootScope` and `$compile` services:
+After including this package you will be able to use a global `createCompiler` function. It requires directive template, `$rootScope` and `$compile` services:
 
 `compile = createCompiler(templateString, $rootScope, $compile)`
 
@@ -112,4 +112,13 @@ After including this package you will be able to use `createCompiler` function. 
     });
   });
   ```
+
+# Contributing
+
+Please provide test for pull requests.
+
+Testing with karma:
+
+* single run `npm run test`
+* watch tests `npm run test:watch`
 

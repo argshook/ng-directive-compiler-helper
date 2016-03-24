@@ -1,10 +1,12 @@
 {
   "name": "ng-directive-compiler-helper",
-  "version": "0.0.2",
+  "author": "Arijus Šukys <argshook@gmail.com> (http://arijus.net)",
+  "version": "0.0.3",
   "description": "helper function for easier angularJS 1.x directive compilation in unit tests",
   "main": "lib/ng-directive-compiler-helper.js",
   "scripts": {
-    "test": "karma start test/karma.conf.js --single-run"
+    "test:watch": "karma start test/karma.conf.js",
+    "test": "npm run test:watch --single-run"
   },
   "repository": {
     "type": "git",
@@ -13,11 +15,14 @@
   "keywords": [
     "angular",
     "directive",
+    "karma",
+    "jasmine",
     "test"
   ],
-  "author": "Arijus Šukys <argshook@gmail.com> (http://arijus.net)",
   "license": "MIT",
   "devDependencies": {
+    "angular": "^1.5.2",
+    "angular-mocks": "^1.5.2",
     "jasmine": "^2.3.2",
     "jasmine-core": "^2.3.4",
     "karma": "^0.13.10",

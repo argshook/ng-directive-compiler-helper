@@ -28,5 +28,8 @@ Icon
 # SublimeText project files
 *.sublime*
 
+# Mainly for Session.vim
+*.vim
+
 node_modules
-bower_components
+
