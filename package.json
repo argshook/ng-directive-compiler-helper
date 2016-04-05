@@ -1,7 +1,7 @@
 {
   "name": "ng-directive-compiler-helper",
   "author": "Arijus Šukys <argshook@gmail.com> (http://arijus.net)",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "helper function for easier angularJS 1.x directive compilation in unit tests",
   "main": "lib/ng-directive-compiler-helper.js",
   "scripts": {
