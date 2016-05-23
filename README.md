@@ -30,7 +30,7 @@ After including this package you will be able to use a global `createCompiler` f
 
 `compile = createCompiler(templateString, $rootScope, $compile)`
 
-`compile` is now a function which can be used in two major ways:
+`compile` is now a function which can be used in two ways:
 
   1. using *callbackFn* which is called after directive is compiled. *callbackFn* is passed with *scope* and *element* arguments
     * `compile(callbackFn)`;
@@ -112,6 +112,38 @@ After including this package you will be able to use a global `createCompiler` f
     });
   });
   ```
+
+1. working with drivers
+
+this is experimental but looks like a cool idea
+
+```js
+// 1. define driver
+let driver = {
+  items: function(element, scope) {
+    return element.find('.imaginary-items-container');
+  }
+};
+
+// 2. use in tests
+it('should contain 3 items', () => {
+  compile(function(scope, element, driver) { // <-- driver is passed as third argument
+    expect(driver.items().length).toBe(3);
+  }, driver) // <-- passing driver which is defined above
+});
+```
+
+testing like this should be cool because:
+* driver can be reused for multiple tests, drying up the test suite
+* no need to repeat selectors all over the place
+* can (should) do all sorts of actions in driver methods, since `element` and `scope` are available for potential
+reusability of code
+
+
+# More examples
+
+i use this helper thing to test one of mine angular projects, you can check here: [argshook/orodarius](https://github.com/argshook/orodarius)
+
 
 # Contributing
 

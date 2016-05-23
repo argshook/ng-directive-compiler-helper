@@ -11,14 +11,14 @@ describe('createCompiler', function () {
       return {
         restrict: 'E',
         scope: true,
-        template: '<div>directive</div>'
+        template: '<div id="directive">directive <div class="child">Child content</div></div>'
       };
     })
     .directive('myIsolateDirective', function () {
       return {
         restrict: 'E',
         scope: { isolateProperty: '@' },
-        template: '<div>isolate directive</div>',
+        template: '<div id="isolate-directive">isolate directive <button ng-click="isolateProperty = \'changed\'">Click me</button><div class="child">Isolate child content</div></div>',
       };
     });
 
@@ -38,7 +38,8 @@ describe('createCompiler', function () {
     it('should return object with scope and element properties', function () {
       var compiledDirective = createdCompiler();
       expect(compiledDirective.scope).toBeDefined();
-      expect(compiledDirective.element.text()).toBe('directive');
+      expect(compiledDirective.element.text()).toMatch('directive');
+      expect(compiledDirective.element[0].querySelector('.child').innerText).toBe('Child content');
     });
 
     describe('when one argument given', function () {
@@ -52,7 +53,8 @@ describe('createCompiler', function () {
         it('should return object with scope and element properties where scope is extended with first argument', function () {
           var compiledDirective = createdCompiler({ someProperty: 'someValue' });
           expect(compiledDirective.scope.someProperty).toBe('someValue');
-          expect(compiledDirective.element.text()).toBe('directive');
+          expect(compiledDirective.element.text()).toMatch('directive');
+          expect(compiledDirective.element[0].querySelector('.child').innerText).toBe('Child content');
         });
       });
     });
@@ -121,7 +123,8 @@ describe('createCompiler', function () {
     it('should return object with scope and element properties', function () {
       var compiledDirective = createdCompiler();
       expect(compiledDirective.scope).toBeDefined();
-      expect(compiledDirective.element.text()).toBe('isolate directive');
+      expect(compiledDirective.element.text()).toMatch('isolate directive');
+      expect(compiledDirective.element[0].querySelector('.child').innerText).toBe('Isolate child content');
     });
 
     describe('when one argument given', function () {
@@ -135,7 +138,8 @@ describe('createCompiler', function () {
         it('should return object with scope and element properties where scope is NOT extended with first argument', function () {
           var compiledDirective = createdCompiler({ parentScopeProperty: 'someValue' });
           expect(compiledDirective.scope.parentScopeProperty).not.toBe('someValue');
-          expect(compiledDirective.element.text()).toBe('isolate directive');
+          expect(compiledDirective.element.text()).toMatch('isolate directive');
+          expect(compiledDirective.element[0].querySelector('.child').innerText).toBe('Isolate child content');
         });
       });
     });
@@ -194,12 +198,39 @@ describe('createCompiler', function () {
         expect(compiledDirective.element.attr('some-attribute')).toBe('someAttributeValue');
       });
     });
+
+    describe('when four arguments given', function () {
+      it('should use last argument as driver', function() {
+        var driver = {
+          text: function(element) {
+            return element[0].querySelector('.child').innerText;
+          },
+
+          driveMeCrazy: function(element, scope) {
+            var button = document.createElement('button');
+            var click = document.createEvent("MouseEvent");
+
+            click.initEvent("click", true, true);
+            element[0].querySelector('button').dispatchEvent(click);
+            scope.$digest();
+          }
+        };
+
+        function callback(scope, element, driver) {
+          expect(driver.text()).toBe('Isolate child content')
+          driver.driveMeCrazy();
+          expect(scope.isolateProperty).toBe('changed')
+        }
+
+        createdCompiler({}, {}, callback, driver);
+      });
+    });
   });
 
   function expectCallbackToBeCalled() {
     var callbackSpy = jasmine.createSpy('callbackSpy');
     createdCompiler(callbackSpy);
-    expect(callbackSpy).toHaveBeenCalledWith(jasmine.any(Object), jasmine.any(Object));
+    expect(callbackSpy).toHaveBeenCalledWith(jasmine.any(Object), jasmine.any(Object), jasmine.any(Object));
   }
 });
 
