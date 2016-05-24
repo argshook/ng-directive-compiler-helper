@@ -237,6 +237,21 @@ describe('createCompiler', function () {
 
         createdCompiler({}, {}, callback, driver);
       });
+
+      it('should set expected context to driver methods', function() {
+        var driver = {
+          testicle: 'shit',
+          goodbye: function() {
+            return 'you little ' + this.testicle;
+          }
+        };
+
+        function callback(scope, element, driver) {
+          expect(driver.goodbye()).toBe('you little shit');
+        }
+
+        createdCompiler({}, {}, callback, driver);
+      });
     });
   });
 
