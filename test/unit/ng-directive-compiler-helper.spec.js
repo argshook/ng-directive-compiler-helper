@@ -207,10 +207,9 @@ describe('createCompiler', function () {
           },
 
           driveMeCrazy: function(element, scope) {
-            var button = document.createElement('button');
-            var click = document.createEvent("MouseEvent");
+            var click = document.createEvent('MouseEvent');
 
-            click.initEvent("click", true, true);
+            click.initEvent('click', true, true);
             element[0].querySelector('button').dispatchEvent(click);
             scope.$digest();
           }
@@ -220,6 +219,20 @@ describe('createCompiler', function () {
           expect(driver.text()).toBe('Isolate child content')
           driver.driveMeCrazy();
           expect(scope.isolateProperty).toBe('changed')
+        }
+
+        createdCompiler({}, {}, callback, driver);
+      });
+
+      it('should pass arguments to driver methods', function() {
+        var driver = {
+          doSpecial: function(element, scope, special) {
+            return special.toUpperCase();
+          }
+        };
+
+        function callback(scope, element, driver) {
+          expect(driver.doSpecial('trick')).toBe('TRICK')
         }
 
         createdCompiler({}, {}, callback, driver);
