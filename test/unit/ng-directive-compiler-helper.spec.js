@@ -242,12 +242,14 @@ describe('createCompiler', function () {
         var driver = {
           testicle: 'shit',
           goodbye: function() {
+            expect(this.$.toString()).toBe('[[object HTMLElement]]');
             return 'you little ' + this.testicle;
           }
         };
 
         function callback(scope, element, driver) {
           expect(driver.goodbye()).toBe('you little shit');
+          expect(driver.testicle).toBe('shit');
         }
 
         createdCompiler({}, {}, callback, driver);

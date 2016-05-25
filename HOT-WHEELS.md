@@ -10,4 +10,5 @@ arguments are given which is kinda shitty because if i don't need, say parentSco
 * [X] pass `this` for driver methods so that other driver methods could be reused
 * [ ] ~~hook element and scope objects on driver method context?~~
 * [X] pass element reference automatically if no other args were passed to driver method
+* [X] hook element onto driver method this as $
 
