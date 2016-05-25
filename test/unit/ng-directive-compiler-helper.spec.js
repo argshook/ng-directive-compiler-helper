@@ -198,69 +198,66 @@ describe('createCompiler', function () {
         expect(compiledDirective.element.attr('some-attribute')).toBe('someAttributeValue');
       });
     });
+  });
 
-    describe('when four arguments given', function () {
-      it('should use last argument as driver', function() {
-        var driver = {
-          text: function(element) {
-            return element[0].querySelector('.child').innerText;
-          },
+  describe('when compiled with driver', function() {
+    var driver = {
+      text: function(element) {
+        return element[0].querySelector('.child').innerText;
+      },
 
-          driveMeCrazy: function(element, scope) {
-            var click = document.createEvent('MouseEvent');
+      driveMeCrazy: function(element, scope) {
+        var click = document.createEvent('MouseEvent');
 
-            click.initEvent('click', true, true);
-            element[0].querySelector('button').dispatchEvent(click);
-            scope.$digest();
-          }
-        };
+        click.initEvent('click', true, true);
+        element[0].querySelector('button').dispatchEvent(click);
+        scope.$digest();
+      },
 
-        function callback(scope, element, driver) {
-          expect(driver.text()).toBe('Isolate child content')
-          driver.driveMeCrazy(element, scope);
-          expect(scope.isolateProperty).toBe('changed')
-        }
+      testicle: 'shit',
 
-        createdCompiler({}, {}, callback, driver);
+      goodbye: function() {
+        expect(this.$.toString()).toBe('[[object HTMLElement]]');
+        return 'you little ' + this.testicle;
+      },
+
+      doSpecial: function(special) {
+        return special.toUpperCase();
+      }
+    };
+
+    beforeEach(inject(function($rootScope, $compile) {
+      createdCompiler = createCompiler(mockIsolateTemplate, $rootScope, $compile, driver);
+    }));
+
+    it('should use last argument as driver', function() {
+      createdCompiler(function(scope, element, driver) {
+        expect(driver.text()).toBe('Isolate child content')
+        driver.driveMeCrazy(element, scope);
+        expect(scope.isolateProperty).toBe('changed')
       });
+    });
 
-      it('should pass arguments to driver methods', function() {
-        var driver = {
-          doSpecial: function(special) {
-            return special.toUpperCase();
-          }
-        };
-
-        function callback(scope, element, driver) {
-          expect(driver.doSpecial('trick')).toBe('TRICK');
-        }
-
-        createdCompiler({}, {}, callback, driver);
+    it('should pass arguments to driver methods', function() {
+      createdCompiler(function(scope, element, driver) {
+        expect(driver.doSpecial('trick')).toBe('TRICK');
       });
+    });
 
-      it('should set expected context to driver methods', function() {
-        var driver = {
-          testicle: 'shit',
-          goodbye: function() {
-            expect(this.$.toString()).toBe('[[object HTMLElement]]');
-            return 'you little ' + this.testicle;
-          }
-        };
+    it('should set expected context to driver methods', function() {
+      function callback(scope, element, driver) {
+        expect(driver.goodbye()).toBe('you little shit');
+        expect(driver.testicle).toBe('shit');
+      }
 
-        function callback(scope, element, driver) {
-          expect(driver.goodbye()).toBe('you little shit');
-          expect(driver.testicle).toBe('shit');
-        }
-
-        createdCompiler({}, {}, callback, driver);
-      });
+      createdCompiler(callback);
     });
   });
 
   function expectCallbackToBeCalled() {
     var callbackSpy = jasmine.createSpy('callbackSpy');
     createdCompiler(callbackSpy);
-    expect(callbackSpy).toHaveBeenCalledWith(jasmine.any(Object), jasmine.any(Object), jasmine.any(Object));
+    expect(callbackSpy).toHaveBeenCalledWith(jasmine.any(Object), jasmine.any(Object));
   }
 });
 
