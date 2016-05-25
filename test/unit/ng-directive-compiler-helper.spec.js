@@ -217,7 +217,7 @@ describe('createCompiler', function () {
 
         function callback(scope, element, driver) {
           expect(driver.text()).toBe('Isolate child content')
-          driver.driveMeCrazy();
+          driver.driveMeCrazy(element, scope);
           expect(scope.isolateProperty).toBe('changed')
         }
 
@@ -226,13 +226,13 @@ describe('createCompiler', function () {
 
       it('should pass arguments to driver methods', function() {
         var driver = {
-          doSpecial: function(element, scope, special) {
+          doSpecial: function(special) {
             return special.toUpperCase();
           }
         };
 
         function callback(scope, element, driver) {
-          expect(driver.doSpecial('trick')).toBe('TRICK')
+          expect(driver.doSpecial('trick')).toBe('TRICK');
         }
 
         createdCompiler({}, {}, callback, driver);
