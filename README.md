@@ -120,24 +120,28 @@ this is experimental but looks like a cool idea
 ```js
 // 1. define driver
 let driver = {
-  items: function(element, scope) {
-    return element.find('.imaginary-items-container');
-  }
+  parent: e => e.find('.imaginary-parent-with-3-children'); // e - reference to element, passed if no other arguments given,
+  children: parent => parent.children;
+  alsoChildren: function() { return this.$.children; } // this.$ - also reference to element
 };
 
-// 2. use in tests
+// 2. hook driver when creating compiler (as last argument)
+let compile = createCompiler(templateString, $rootScope, $compile, driver)`
+
+// 3. use in tests
 it('should contain 3 items', () => {
   compile(function(scope, element, driver) { // <-- driver is passed as third argument
-    expect(driver.items().length).toBe(3);
-  }, driver) // <-- passing driver which is defined above
+    expect(driver.parent().length).toBe(1);
+    expect(driver.children(element).length).toBe(3);
+    expect(driver.alsoChildren().length).toBe(3);
+  })
 });
 ```
 
 testing like this should be cool because:
 * driver can be reused for multiple tests, drying up the test suite
 * no need to repeat selectors all over the place
-* can (should) do all sorts of actions in driver methods, since `element` and `scope` are available for potential
-reusability of code
+* other more complicated logic can be reused (e.g. do some component setup for assertions)
 
 
 # More examples
