@@ -30,7 +30,7 @@ After including this package you will be able to use a global `createCompiler` f
 
 `compile = createCompiler(templateString, $rootScope, $compile)`
 
-`compile` is now a function which can be used in two major ways:
+`compile` is now a function which can be used in two ways:
 
   1. using *callbackFn* which is called after directive is compiled. *callbackFn* is passed with *scope* and *element* arguments
     * `compile(callbackFn)`;
@@ -113,9 +113,78 @@ After including this package you will be able to use a global `createCompiler` f
   });
   ```
 
+1. working with drivers
+
+  ```js
+  // 1. define driver
+  let driver = {
+    parent: e => e.find('.imaginary-parent-with-3-children'); // e - reference to element, passed if no other arguments given,
+    children: parent => parent.children;
+    alsoChildren: function() { return this.$.children; } // this.$ - also reference to element
+  };
+
+  // 2. hook driver when creating compiler (as last argument)
+  let compile = createCompiler(templateString, $rootScope, $compile, driver)`
+
+  // 3. use in tests
+  it('should contain 3 items', () => {
+    compile(function(scope, element, driver) { // <-- driver is passed as third argument
+      expect(driver.parent().length).toBe(1);
+      expect(driver.children(element).length).toBe(3);
+      expect(driver.alsoChildren().length).toBe(3);
+    })
+  });
+  ```
+
+testing like this should be cool because:
+* driver can be reused for multiple tests, drying up the test suite
+* no need to repeat selectors everywhere
+* other more complicated logic can be reused (e.g. do some component setup for assertions)
+
+### Few notes about drivers
+
+* if driver method is called without arguments, it automatically gets element reference (but ONLY if there are no
+    arguments given):
+
+> Note: the following examples assume you have `let compile = createCompiler` setup with driver.
+
+  ```js
+  let driver = {
+    myTitle: e => e.find('.title-element')
+  }
+
+  it('should have title', () => {
+    compile((scope, element, driver) {
+      expect(driver.myTitle().text()).toBe('assume this element has this text ;)');
+    });
+  });
+  ```
+
+* if driver method is called with arguments, element reference is available through `this.$`:
+
+  ```js
+  let driver = {
+    myListItem: function(n) {
+      return this.$.find('.my-list').get(n);
+    }
+  };
+
+  it('should have correct item', () => {
+    compile(function(scope, element, driver) {
+      expect(driver.myListItem(2).text()).toBe('assume this text also exists');
+    });
+  });
+  ```
+
+
+# More examples
+
+i use this helper thing to test one of mine angular projects, you can check here: [argshook/orodarius](https://github.com/argshook/orodarius)
+
+
 # Contributing
 
-Please provide test for pull requests.
+Please provide tests for pull requests.
 
 Testing with karma:
 
