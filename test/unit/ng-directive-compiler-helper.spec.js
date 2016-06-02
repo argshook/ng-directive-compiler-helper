@@ -217,12 +217,15 @@ describe('createCompiler', function () {
       testicle: 'shit',
 
       goodbye: function() {
-        expect(this.$.toString()).toBe('[[object HTMLElement]]');
+        // matching since apparently depending on platform it's
+        // either HTMLElement or HTMLUnknownElement
+        // (e.g. on linux it's former whereas on osx it's the latter)
+        expect(this.$.toString()).toMatch('\[object HTML.*Element\]');
         return 'you little ' + this.testicle;
       },
 
-      doSpecial: function(special) {
-        return special.toUpperCase();
+      uppercase: function(me) {
+        return me.toUpperCase();
       }
     };
 
@@ -240,17 +243,19 @@ describe('createCompiler', function () {
 
     it('should pass arguments to driver methods', function() {
       createdCompiler(function(scope, element, driver) {
-        expect(driver.doSpecial('trick')).toBe('TRICK');
+        expect(driver.uppercase('trick')).toBe('TRICK');
       });
     });
 
     it('should set expected context to driver methods', function() {
-      function callback(scope, element, driver) {
+      createdCompiler(function (scope, element, driver) {
         expect(driver.goodbye()).toBe('you little shit');
         expect(driver.testicle).toBe('shit');
-      }
+      });
+    });
 
-      createdCompiler(callback);
+    it('should not change original driver object', function() {
+      expect(driver.$).toBe(undefined);
     });
   });
 
