@@ -124,7 +124,7 @@ After including this package you will be able to use a global `createCompiler` f
   };
 
   // 2. hook driver when creating compiler (as last argument)
-  let compile = createCompiler(templateString, $rootScope, $compile, driver)`
+  let compile = createCompiler(templateString, $rootScope, $compile, driver);
 
   // 3. use in tests
   it('should contain 3 items', () => {
@@ -144,9 +144,9 @@ testing like this should be cool because:
 ### Few notes about drivers
 
 * if driver method is called without arguments, it automatically gets element reference (but ONLY if there are no
-    arguments given):
+arguments given):
 
-> Note: the following examples assume you have `let compile = createCompiler` setup with driver.
+  > Note: the following examples assume you have `let compile = createCompiler` setup with driver.
 
   ```js
   let driver = {
@@ -155,7 +155,7 @@ testing like this should be cool because:
 
   it('should have title', () => {
     compile((scope, element, driver) {
-      expect(driver.myTitle().text()).toBe('assume this element has this text ;)');
+      expect(driver.myTitle().text()).toBe('some text');
     });
   });
   ```
@@ -171,7 +171,7 @@ testing like this should be cool because:
 
   it('should have correct item', () => {
     compile(function(scope, element, driver) {
-      expect(driver.myListItem(2).text()).toBe('assume this text also exists');
+      expect(driver.myListItem(2).text()).toBe('my list item #3');
     });
   });
   ```
